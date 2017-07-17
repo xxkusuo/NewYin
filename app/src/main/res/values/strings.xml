@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewYin</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="floating_action_button_behavior">com.gxtc.yyj.newyin.mvp.ui.behavior.FloatingActionButtonBehavior</string>
+    <string name="content_behavior">com.gxtc.yyj.newyin.mvp.ui.behavior.ContentBehavior</string>
+</resources>
