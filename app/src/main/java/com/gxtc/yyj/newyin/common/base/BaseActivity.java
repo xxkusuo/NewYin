@@ -50,7 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity
 
 	/** 查找子控件，可以省略强转 */
 	public <T> T findView(int id) {
-		@SuppressWarnings("unchecked")
 		T view = (T) findViewById(id);
 		return view;
 	}

@@ -45,7 +45,9 @@ public class Utils {
         }
     }
 
-    /** 格式化日期显示 */
+    /**
+     * 格式化日期显示
+     */
     public static String formatDate(long date) {
         if (DateUtils.isToday(date)) {
             return DateFormat.format("今天 kk:mm", date).toString();
@@ -54,7 +56,9 @@ public class Utils {
         }
     }
 
-    /** 格式化金额显示 */
+    /**
+     * 格式化金额显示
+     */
     public static String formatAmount(double amount) {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(1);     // 金额只保存一位有效数字
@@ -62,23 +66,75 @@ public class Utils {
     }
 
 
-    /** 匹配ip地址的正则表达式 */
+    /**
+     * 匹配ip地址的正则表达式
+     */
     private static final String IP_REGEXP =
             "(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9" +
-            "])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\" +
-            ".(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\." +
-            "(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])";
+                    "])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\" +
+                    ".(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\." +
+                    "(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])";
 
     /**
      * 替换一个url中的ip地址 <br/>
      * 例如：<br/>
-     *      url为： http://127.0.0.1:8080/jinquan/1.jpg <br/>
-     *      调用 replaceIp(url, "192.168.1.1")后，<br/>
-     *      则得到新的url为： http://192.168.1.1:8080/jinquan/1.jpg
+     * url为： http://127.0.0.1:8080/jinquan/1.jpg <br/>
+     * 调用 replaceIp(url, "192.168.1.1")后，<br/>
+     * 则得到新的url为： http://192.168.1.1:8080/jinquan/1.jpg
      */
     public static String replaceIp(String url, String ip) {
         // 匹配ip的正则表达式
         return url.replaceAll(IP_REGEXP, ip);
+    }
+
+
+    /**
+     * 每六位描述一个字节
+     * @author zhouzhian
+     */
+
+    /**
+     * 字符串编码成Unicode编码
+     */
+    public static String encode(String src) throws Exception {
+        char c;
+        StringBuilder str = new StringBuilder();
+        int intAsc;
+        String strHex;
+        for (int i = 0; i < src.length(); i++) {
+            c = src.charAt(i);
+            intAsc = (int) c;
+            strHex = Integer.toHexString(intAsc);
+            if (intAsc > 128)
+                str.append("\\u" + strHex);
+            else
+                str.append("\\u00" + strHex); // 低位在前面补00
+        }
+        return str.toString();
+    }
+
+    /**
+     * Unicode解码成字符串
+     *
+     * @param src
+     * @return
+     */
+    public static String decode(String src) {
+        int t = src.length() / 6;
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < t; i++) {
+            String s = src.substring(i * 6, (i + 1) * 6); // 每6位描述一个字节
+            // 高位需要补上00再转
+            String s1 = s.substring(2, 4) + "00";
+            // 低位直接转
+            String s2 = s.substring(4);
+            // 将16进制的string转为int
+            int n = Integer.valueOf(s1, 16) + Integer.valueOf(s2, 16);
+            // 将int转换为字符
+            char[] chars = Character.toChars(n);
+            str.append(new String(chars));
+        }
+        return str.toString();
     }
 
 }

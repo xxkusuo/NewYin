@@ -1,6 +1,5 @@
 package com.gxtc.yyj.newyin.mvp.ui.fragment;
 
-import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseFragment;
 
 /**
@@ -10,7 +9,7 @@ import com.gxtc.yyj.newyin.common.base.BaseFragment;
 public class MusicFragment extends BaseFragment {
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_home;
+        return 0;
     }
 
     @Override
@@ -22,4 +21,5 @@ public class MusicFragment extends BaseFragment {
     protected void initData() {
 
     }
+
 }

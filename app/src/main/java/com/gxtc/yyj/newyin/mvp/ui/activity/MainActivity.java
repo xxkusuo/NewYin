@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseActivity;
-import com.gxtc.yyj.newyin.mvp.ui.fragment.HomeFragment;
+import com.gxtc.yyj.newyin.mvp.ui.fragment.ExploreFragment;
+import com.gxtc.yyj.newyin.mvp.ui.fragment.MusicFragment;
+import com.gxtc.yyj.newyin.mvp.ui.fragment.WelfareFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -189,9 +191,9 @@ public class MainActivity extends BaseActivity
 
     /*使用枚举的方式 放入枚举常量 然后从中取出来*/
     enum MainTab {
-        MUSIC("主页", R.drawable.tab_home_selector, HomeFragment.class),
-        VIDEO("新闻", R.drawable.tab_news_selector, HomeFragment.class),
-        EXPLORE("音乐", R.drawable.tab_music_selector, HomeFragment.class);
+        EXPLORE("浏览", R.drawable.tab_explore_selector, ExploreFragment.class),
+        WELFARE("福利", R.drawable.tab_welfare_selector, WelfareFragment.class),
+        MUSIC("音乐", R.drawable.tab_music_selector, MusicFragment.class);
         private String title;
         private int topResID;
         private Class clazz;
