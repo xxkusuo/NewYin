@@ -46,10 +46,11 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 			initListener();
 			initData();
 			
-		} else {
-			// 解除mRoot与其父控件的关系
-			unbindWidthParent(mRoot);
 		}
+//		else {
+//			// 解除mRoot与其父控件的关系
+//			unbindWidthParent(mRoot);
+//		}
 		
 		return mRoot;
 	}

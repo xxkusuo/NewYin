@@ -4,6 +4,7 @@ import com.gxtc.yyj.newyin.BuildConfig;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -40,6 +41,7 @@ public class RetrofitManager {
                 .baseUrl(IHttpService.HOST)
                 .client(genericClient())
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         mHttpService = mRetrofit.create(IHttpService.class);
     }

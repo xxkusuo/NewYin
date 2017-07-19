@@ -17,7 +17,7 @@ public class CommonProtocol extends BaseProtocol {
      * @param callback   回调
      * @param reqType    请求类型
      */
-    public void getExplore(String resultSize, String pageOffset, Callback<ExploreBean> callback, int reqType) {
+    public void getExplore(int resultSize, int pageOffset, Callback<ExploreBean> callback, int reqType) {
         execute(getIHttpService().getExplore(resultSize, pageOffset), callback, reqType);
     }
 }

@@ -15,7 +15,8 @@ public interface IHttpService {
     String HOST = "http://gank.io/api/";
     int TYPE_REFRESH = 0;//刷新
     int TYPE_MORE = 1;//加载更多
+    int DEFAULT_RESULT_SIZE = 20;
 
-    @GET("data/{resultSize}/{pageOffset}")
-    Observable<ExploreBean> getExplore(@Path("resultSize")String resultSize, @Path("pageOffset")String pageOffset);
+    @GET("data/all/{resultSize}/{pageOffset}")
+    Observable<ExploreBean> getExplore(@Path("resultSize")int resultSize, @Path("pageOffset")int pageOffset);
 }

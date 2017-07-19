@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#fff"
+                                    android:elevation="3dp"
+                                    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_author_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_launcher"
+                />
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_toEndOf="@+id/iv_author_header"
+               android:layout_marginStart="12dp"
+               android:layout_centerVertical="true"
+               >
+               <TextView
+                   android:id="@+id/tv_author_name"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="上将潘凤"
+                   android:textSize="14sp"
+                   android:textColor="#000"
+                   />
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="8dp"
+                  >
+                  <TextView
+                      android:id="@+id/tv_pub_time"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="2017-07-19"
+                      android:textSize="10sp"
+                      />
+                  <TextView
+                      android:id="@+id/tv_pub_source"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="来自 chrome"
+                      android:textSize="10sp"
+                      android:layout_marginStart="25dp"
+                      />
+                  <TextView
+                      android:id="@+id/tv_pub_type"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="分类 前端"
+                      android:textSize="10sp"
+                      android:layout_marginStart="25dp"
+                      />
+              </LinearLayout>
+           </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="8dp"
+            android:id="@+id/tv_pub_content"
+            android:text="妈妈买药后骑车离开，3岁女儿街头狂追[允悲]】近日，江西大余一位粗心妈妈在带着孩子看病回家的途中，突然发现坐在后座的女儿不见了，她报警求助，以为半路跌落失踪，结果是自己忘带女儿回家。@梨视频 L一手video的秒拍视频 女儿：妈妈，我是买药送的吗？我是不是你最疼爱的人？"
+            android:textColor="#434040"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_explore_img"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>
