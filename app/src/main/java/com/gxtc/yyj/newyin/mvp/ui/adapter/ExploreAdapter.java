@@ -1,6 +1,7 @@
 package com.gxtc.yyj.newyin.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gxtc.yyj.newyin.R;
@@ -27,6 +28,8 @@ public class ExploreAdapter extends BaseQuickAdapter<ExploreBean.ResultsBean, Ex
         holder.tvPubType.setText("分类 "+result.getType());
         holder.tvPubContent.setText(result.getDesc());
         holder.tvPubTime.setText(Utils.formatTime(result.getPublishedAt()));
+        holder.rvExploreImg.setLayoutManager(new GridLayoutManager(mContext,3));
+        holder.rvExploreImg.setAdapter(new ExploreImageAdapter(result.getImages()));
     }
 
 }

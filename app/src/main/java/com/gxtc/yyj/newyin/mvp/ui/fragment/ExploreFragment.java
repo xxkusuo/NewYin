@@ -32,7 +32,6 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private int padding = Global.dp2px(12);
-    private int lastVisibleItem;
     private ExploreAdapter mExploreAdapter;
 
     @Override
@@ -45,9 +44,24 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout = findView(R.id.srl_content);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = findView(R.id.rv_content);
+    }
+
+    @Override
+    protected void initData() {
         mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mResults = new ArrayList<>();
         mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, padding, getResources().getColor(R.color.color_bg_gray)));
+        mExploreAdapter = new ExploreAdapter(mResults);
+        mRecyclerView.setAdapter(mExploreAdapter);
+        mExplorePresenter = new ExplorePresenter(this);
+        mExplorePresenter.getExplore(pageOffset, IHttpService.TYPE_REFRESH);
+    }
+
+
+    @Override
+    protected void initListener() {
+        super.initListener();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -64,15 +78,6 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-    }
-
-    @Override
-    protected void initData() {
-        mResults = new ArrayList<>();
-        mExplorePresenter = new ExplorePresenter(this);
-        mExplorePresenter.getExplore(pageOffset, IHttpService.TYPE_REFRESH);
-        mExploreAdapter = new ExploreAdapter(mResults);
-        mRecyclerView.setAdapter(mExploreAdapter);
     }
 
     /**

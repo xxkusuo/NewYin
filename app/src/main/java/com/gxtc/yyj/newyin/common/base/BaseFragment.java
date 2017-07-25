@@ -43,9 +43,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 			Utils.findButtonAndSetOnClickListener(mRoot, this);
 			
 			initView();
-			initListener();
 			initData();
-			
+			initListener();
+
 		}
 //		else {
 //			// 解除mRoot与其父控件的关系
