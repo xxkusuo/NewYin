@@ -3,6 +3,9 @@ package com.gxtc.yyj.newyin.mvp.ui.fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ProgressBar;
 
 import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseFragment;
@@ -33,6 +36,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private LinearLayoutManager mLayoutManager;
     private int padding = Global.dp2px(12);
     private ExploreAdapter mExploreAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     protected int getLayoutRes() {
@@ -44,6 +48,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout = findView(R.id.srl_content);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = findView(R.id.rv_content);
+        mProgressBar = findView(R.id.pb_content);
     }
 
     @Override
@@ -66,16 +71,11 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if ((newState == RecyclerView.SCROLL_STATE_SETTLING
-                        || newState == RecyclerView.SCROLL_STATE_DRAGGING)
-                        && mLayoutManager.findLastVisibleItemPosition() >= mResults.size() - 5) {//需要大于5第一次的数据
+
+                if (mLayoutManager.findLastVisibleItemPosition() >= mResults.size() - 1) {
+                    mProgressBar.setVisibility(View.VISIBLE);
                     mExplorePresenter.getExplore(++pageOffset, IHttpService.TYPE_MORE);
                 }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
@@ -93,6 +93,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
      */
     @Override
     public void refreshComplete() {
+        mProgressBar.animate().translationY(mProgressBar.getHeight()).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(200).start();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

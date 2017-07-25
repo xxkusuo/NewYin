@@ -88,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:id="@+id/rv_explore_img"
+            android:nestedScrollingEnabled="false"
             />
     </LinearLayout>
 </android.support.v7.widget.CardView>

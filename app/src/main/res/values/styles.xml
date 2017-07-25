@@ -18,6 +18,12 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
-        <item name="color">#000</item>
+        <item name="android:maxHeight">35dp</item>
+        <item name="android:maxWidth">35dp</item>
+        <item name="android:minHeight">35dp</item>
+        <item name="android:minWidth">35dp</item>
+        <item name="android:indeterminateTint">@color/pb_indeterminate_tint</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+        <item name="android:background">@color/color_white</item>
     </style>
 </resources>
