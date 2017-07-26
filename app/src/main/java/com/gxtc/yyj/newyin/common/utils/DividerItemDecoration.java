@@ -17,6 +17,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private int mDividerColor = 0;//默认为0透明
     private int mFirstItemToTop = 0;
+    private int mFirstItemToTopColor = 0;//默认透明
 
 
     public DividerItemDecoration(int dividerHeight) {
@@ -24,13 +25,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public DividerItemDecoration(int dividerHeight, @ColorInt int dividerColor) {
-        this(0, dividerHeight, dividerColor);
+        this(0, 0, dividerHeight, dividerColor);
     }
 
-    public DividerItemDecoration(int firstItemToTop, int dividerHeight, @ColorInt int dividerColor) {
+    public DividerItemDecoration(int firstItemToTop, @ColorInt int firstItemToTopColor, int dividerHeight, @ColorInt int dividerColor) {
         this.mFirstItemToTop = firstItemToTop;//第一个item距离RecyclerView顶部的距离
         this.mDividerHeight = dividerHeight;//item之间的间距
         this.mDividerColor = dividerColor;//item间间距的颜色
+        this.mFirstItemToTopColor = firstItemToTopColor;//第一个item距离顶部的颜色
         setUp(dividerColor);
     }
 
@@ -70,14 +72,17 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             for (int i = 0; i < itemCount; i++) {
                 View view = parent.getChildAt(i);
                 int index = parent.getChildAdapterPosition(view);
-                if (index == 0) {
-                    continue;
-                }
                 float left = parent.getPaddingLeft();
-                float top = view.getTop() - mDividerHeight;
                 float right = parent.getWidth() - parent.getPaddingRight();
-                float bottom = view.getTop();
-                c.drawRect(left, top, right, bottom, mPaint);
+                if (index == 0) {
+                    mPaint.setColor(mFirstItemToTopColor);
+                    c.drawRect(left, view.getTop() - mFirstItemToTop, right, view.getTop(), mPaint);
+                } else {
+                    mPaint.setColor(mDividerColor);
+                    float top = view.getTop() - mDividerHeight;
+                    float bottom = view.getTop();
+                    c.drawRect(left, top, right, bottom, mPaint);
+                }
             }
         }
     }

@@ -86,7 +86,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="12dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:id="@+id/rv_explore_img"
             android:nestedScrollingEnabled="false"
             />

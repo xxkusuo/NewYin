@@ -1,7 +1,5 @@
 package com.gxtc.yyj.newyin.mvp.model.net;
 
-import com.gxtc.yyj.newyin.BuildConfig;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -49,9 +47,7 @@ public class RetrofitManager {
 
     private static OkHttpClient genericClient() {
         LoggingInterceptor loggingInterceptor = null;
-        if (BuildConfig.DEBUG) {//可以在这里设置是否开启日志
         loggingInterceptor = new LoggingInterceptor();
-        }
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build();

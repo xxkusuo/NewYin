@@ -2,6 +2,7 @@ package com.gxtc.yyj.newyin.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gxtc.yyj.newyin.R;
@@ -23,12 +24,12 @@ public class ExploreAdapter extends BaseQuickAdapter<ExploreBean.ResultsBean, Ex
 
     @Override
     protected void convert(ExploreHolder holder, ExploreBean.ResultsBean result) {
-        holder.tvAuthorName.setText(result.getWho());
-        holder.tvPubSource.setText("来自 "+result.getSource());
-        holder.tvPubType.setText("分类 "+result.getType());
+        holder.tvAuthorName.setText(TextUtils.isEmpty(result.getWho()) ? "佚名" : result.getWho());
+        holder.tvPubSource.setText("来自 " + result.getSource());
+        holder.tvPubType.setText("分类 " + result.getType());
         holder.tvPubContent.setText(result.getDesc());
         holder.tvPubTime.setText(Utils.formatTime(result.getPublishedAt()));
-        holder.rvExploreImg.setLayoutManager(new GridLayoutManager(mContext,3));
+        holder.rvExploreImg.setLayoutManager(new GridLayoutManager(mContext, 3));
         holder.rvExploreImg.setAdapter(new ExploreImageAdapter(result.getImages()));
     }
 

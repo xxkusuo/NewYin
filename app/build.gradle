@@ -47,4 +47,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     compile 'com.liaoinstan.springview:library:1.2.6'
+    compile 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
+
+    compile 'com.zhy:okhttputils:2.6.2'
 }

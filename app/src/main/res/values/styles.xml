@@ -25,5 +25,6 @@
         <item name="android:indeterminateTint">@color/pb_indeterminate_tint</item>
         <item name="android:indeterminateTintMode">src_atop</item>
         <item name="android:background">@color/color_white</item>
+        <item name="android:foreground">@color/color_white</item>
     </style>
 </resources>
