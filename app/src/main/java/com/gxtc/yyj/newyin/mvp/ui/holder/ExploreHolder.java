@@ -19,7 +19,6 @@ public class ExploreHolder extends BaseViewHolder {
     public TextView tvAuthorName;
     public TextView tvPubTime;
     public TextView tvPubSource;
-    public TextView tvPubType;
     public TextView tvPubContent;
     public RecyclerView rvExploreImg;
 
@@ -29,7 +28,6 @@ public class ExploreHolder extends BaseViewHolder {
         tvAuthorName = (TextView) itemView.findViewById(R.id.tv_author_name);
         tvPubTime = (TextView) itemView.findViewById(R.id.tv_pub_time);
         tvPubSource = (TextView) itemView.findViewById(R.id.tv_pub_source);
-        tvPubType = (TextView) itemView.findViewById(R.id.tv_pub_type);
         rvExploreImg = (RecyclerView) itemView.findViewById(R.id.rv_explore_img);
         tvPubContent = (TextView) itemView.findViewById(R.id.tv_pub_content);
     }

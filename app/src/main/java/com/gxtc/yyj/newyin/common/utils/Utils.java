@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,6 +23,7 @@ import java.util.Date;
  */
 public class Utils {
     private static final String TAG = "Utils";
+
     /**
      * 查找一个布局里的所有的按钮并设置点击事件
      *
@@ -140,9 +142,22 @@ public class Utils {
         return str.toString();
     }
 
+    /*-----新浪微博工具-----*/
 
     /**
-     * 2017-07-14T13:24:31.177Z 初始时间格式
+     * 格式化来源source
+     */
+
+    public static String formatSource(String sourceStr) {
+        if (!TextUtils.isEmpty(sourceStr)) {
+            String source = sourceStr.substring(sourceStr.indexOf("<") + 1, sourceStr.lastIndexOf(">"));
+            return source;
+        }
+        return null;
+    }
+
+    /**
+     * Thu Jul 27 14:38:03 +0800 2017 初始时间格式
      * 格式化时间显示
      *
      * @param timeStr 时间字符串
@@ -150,44 +165,44 @@ public class Utils {
      */
     public static String formatTime(String timeStr) {
         if (!TextUtils.isEmpty(timeStr)) {
-            if (timeStr.contains("T")) {
-                String[] ts = timeStr.split("T");
-                String day = ts[0];
-                String time = ts[1];
-                SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                try {
-                    Date dayDate = dayFormat.parse(day);
-                    Date timeDate = timeFormat.parse(time.substring(0,time.lastIndexOf(".")));
-                    //判断是否处于同一天
-                    int hour = (int) ((System.currentTimeMillis() - dayDate.getTime()) / 1000 / 60 / 60);
-                    if (hour < 24) {
-                        //处于同一天 计算是否在1个小时之内
-                        float l = ((System.currentTimeMillis() - dayDate.getTime() - timeDate.getTime()) * 1f / 1000 / 60 / 60);
-                        if (l < 1) {
-                            return (int) (l * 60 + 0.5f) + "分钟前";//在1小时内就直接显示多少分钟
+            SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+            try {
+                Date date = format.parse(timeStr.trim());
+                long time = date.getTime();//得到传入的时间
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
+                String dayStr = dateFormat.format(date);
+                String[] split = dayStr.split(" ");
+                String partDay = split[0];
+                String partTime = split[1];
+                long currentTimeMillis = System.currentTimeMillis();//获取当前时间比对
+                //判断是否处于同一天
+                int hour = (int) ((currentTimeMillis - time) / 1000 / 60 / 60);
+                if (hour < 24) {
+                    //处于同一天 计算是否在1个小时之内
+                    float l = (((currentTimeMillis - time) - time) * 1f / 1000 / 60 / 60);
+                    if (l < 1) {
+                        return (int) (l * 60 + 0.5f) + "分钟前";//在1小时内就直接显示多少分钟
+                    } else {
+                        return partDay;//否则显示时今天多少点发布的
+                    }
+                } else {
+                    if (hour < 72) {
+                        if (hour < 48) {
+                                return "昨天 " + partTime;
                         } else {
-                            return "今天 " + time.substring(0,time.lastIndexOf(":"));//否则显示时今天多少点发布的
+                                return "前天 " + partTime;
                         }
                     } else {
-                        if (hour < 72) {
-                            if (hour < 48) {
-                                return "昨天 " + time.substring(0,time.lastIndexOf(":"));
-                            } else {
-                                return "前天 " + time.substring(0,time.lastIndexOf(":"));
-                            }
-                        } else {
-                            return day;
-                        }
+                        return dayStr;
                     }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
                 }
-            } else {
-                return timeStr;
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+        } else {
+            return "";
         }
-        return null;
+        return "";
     }
 
 }

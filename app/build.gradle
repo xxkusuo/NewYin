@@ -35,7 +35,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     //rxJava
-    compile "io.reactivex.rxjava2:rxjava:2.1.1"
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     //dagger2
     compile 'com.google.dagger:dagger:2.2'
@@ -45,9 +45,9 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-
     compile 'com.liaoinstan.springview:library:1.2.6'
     compile 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
-
     compile 'com.zhy:okhttputils:2.6.2'
+    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 }

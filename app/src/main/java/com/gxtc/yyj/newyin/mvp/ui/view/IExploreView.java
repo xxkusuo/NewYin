@@ -10,5 +10,5 @@ import java.util.List;
  */
 
 public interface IExploreView extends IBaseView{
-    void onResponse(int reqType, List<ExploreBean.ResultsBean> result);//刷新完成提供数据刷新UI
+    void onResponse(int reqType, List<ExploreBean.StatusesBean> result);//刷新完成提供数据刷新UI
 }

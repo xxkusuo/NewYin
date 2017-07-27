@@ -211,11 +211,15 @@ public class Global {
      * @param finishPresent 是否结束当前Activity
      */
     public static void startIntent(Context context, Class clazz, boolean finishPresent) {
-        startIntentWithBundle(context, clazz, null, finishPresent);
+        startIntent(context, clazz, null, finishPresent, 0);
     }
 
     public static void startIntent(Context context, Class clazz) {
         startIntent(context, clazz, false);
+    }
+
+    public static void startIntentDelay(Context context, Class clazz, boolean finishPresent, long delayMillis) {
+        startIntent(context, clazz, null, finishPresent, delayMillis);
     }
 
     /**
@@ -226,26 +230,42 @@ public class Global {
      * @param bundle        数据
      * @param finishPresent 是否结束当前activity
      */
-    public static void startIntentWithBundle(Context context, Class clazz, Bundle bundle, boolean finishPresent) {
+    public static void startIntent(Context context, Class clazz, Bundle bundle, boolean finishPresent, long delayMillis) {
         Intent intent = new Intent();
         if (context instanceof Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         intent.setClass(context, clazz);
-        if (bundle != null) {
-            context.startActivity(intent, bundle);
-        } else {
-            context.startActivity(intent);
-        }
-        if (finishPresent) {
-            if (context instanceof Activity) {
-                ((Activity) context).finish();
-            }
-        }
+        startActivity(context, intent, bundle, delayMillis, finishPresent);
     }
 
-    public static void startIntentWithBundle(Context context, Class clazz, Bundle bundle) {
-        startIntentWithBundle(context, clazz, bundle, false);
+    /**
+     * 跳转activity
+     *
+     * @param context       Context上下文
+     * @param intent        意图
+     * @param bundle        数据
+     * @param delayMillis   延时时间
+     * @param finishPresent 是否结束当前activity
+     */
+    public static void startActivity(final Context context, final Intent intent, final Bundle bundle, long delayMillis, final boolean finishPresent) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (bundle == null) {
+                    context.startActivity(intent);
+                } else {
+                    context.startActivity(intent, bundle);
+                }
+                if (finishPresent) {
+                    if (context instanceof Activity) ((Activity) context).finish();
+                }
+            }
+        }, delayMillis);
+    }
+
+    public static void startIntent(Context context, Class clazz, Bundle bundle) {
+        startIntent(context, clazz, bundle, false, 0);
     }
 
     public static void startIntentWithExtra(Context context, Class clazz, IntentExtra value) {

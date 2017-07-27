@@ -5,6 +5,7 @@ import com.gxtc.yyj.newyin.mvp.model.bean.ExploreBean;
 import com.gxtc.yyj.newyin.mvp.model.net.CommonProtocol;
 import com.gxtc.yyj.newyin.mvp.model.net.IHttpService;
 import com.gxtc.yyj.newyin.mvp.ui.view.IExploreView;
+import com.gxtc.yyj.newyin.sina.Constants;
 
 import io.reactivex.Observable;
 
@@ -21,10 +22,17 @@ public class ExplorePresenter {
         mProtocol = new CommonProtocol();
     }
 
-    public void getExplore(final int resultSize, int pageOffset, int reqType) {
+    public void getExplore(String accessToken,int page, int reqType) {
         if (reqType == IHttpService.TYPE_REFRESH)
             mExploreView.refreshing();
-        mProtocol.getExplore(resultSize, pageOffset, new Callback<ExploreBean>() {
+        mProtocol.getExplore(
+                accessToken,
+                Constants.DEFAULT_COUNT,
+                page,
+                Constants.DEFAULT_BASE_APP,
+                Constants.DEFAULT_FEATURE,
+                Constants.DEFAULT_TRIM_USER,
+                new Callback<ExploreBean>() {
             @Override
             public void error(Observable observable, Throwable throwable) {
                 mExploreView.refreshComplete();
@@ -34,12 +42,8 @@ public class ExplorePresenter {
             @Override
             public void onSuccess(int reqType, ExploreBean exploreBean) {
                 mExploreView.refreshComplete();
-                mExploreView.onResponse(reqType, exploreBean.getResults());//手动转换数据
+                mExploreView.onResponse(reqType, exploreBean.getStatuses());//手动转换数据
             }
         }, reqType);
-    }
-
-    public void getExplore(int pageOffset, int reqType) {
-        getExplore(IHttpService.DEFAULT_RESULT_SIZE, pageOffset, reqType);
     }
 }

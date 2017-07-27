@@ -177,13 +177,26 @@ public abstract class BaseActivity extends AppCompatActivity
      *
      * @param clazz 目的类
      */
-    public void startIntentWithBundle(Class clazz, Bundle bundle) {
-        Global.startIntentWithBundle(BaseActivity.this, clazz, bundle);
+    public void startIntent(Class clazz, Bundle bundle) {
+        Global.startIntent(BaseActivity.this, clazz, bundle);
     }
 
-    public void startIntentWithBundle(Class clazz, Bundle bundle, boolean finishPresent) {
-        Global.startIntentWithBundle(BaseActivity.this, clazz, bundle, finishPresent);
+    public void startIntent(Class clazz, Bundle bundle, boolean finishPresent) {
+        Global.startIntent(BaseActivity.this, clazz, bundle, finishPresent, 0);
     }
+
+    /**
+     * 延时
+     */
+
+    public void startIntentDelay(Class clazz, long delayMillis) {
+        Global.startIntentDelay(BaseActivity.this, clazz, false, delayMillis);
+    }
+
+    public void startIntentDelay(Class clazz, boolean finishPresent, long delayMillis) {
+        Global.startIntentDelay(BaseActivity.this, clazz, finishPresent, delayMillis);
+    }
+
 }
 
 

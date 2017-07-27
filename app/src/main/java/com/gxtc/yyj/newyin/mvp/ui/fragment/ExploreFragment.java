@@ -13,25 +13,31 @@ import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseFragment;
 import com.gxtc.yyj.newyin.common.utils.DividerItemDecoration;
 import com.gxtc.yyj.newyin.common.utils.Global;
+import com.gxtc.yyj.newyin.common.utils.L;
 import com.gxtc.yyj.newyin.mvp.model.bean.ExploreBean;
 import com.gxtc.yyj.newyin.mvp.model.net.IHttpService;
 import com.gxtc.yyj.newyin.mvp.presenter.ExplorePresenter;
 import com.gxtc.yyj.newyin.mvp.ui.adapter.ExploreAdapter;
 import com.gxtc.yyj.newyin.mvp.ui.view.IExploreView;
+import com.sina.weibo.sdk.auth.AccessTokenKeeper;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.Call;
 
 /**
  * Created by Jam on 2017/7/17.
  */
 
 public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IExploreView {
-
+    private static final String TAG = "ExploreFragment";
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private List<ExploreBean.ResultsBean> mResults;
+    private List<ExploreBean.StatusesBean> mResults;
     private ExplorePresenter mExplorePresenter;
     private int pageOffset = 1;
     private RecyclerView mRecyclerView;
@@ -39,6 +45,8 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private int padding = Global.dp2px(12);
     private ExploreAdapter mExploreAdapter;
     private ProgressBar mProgressBar;
+    private Oauth2AccessToken mAccessToken;
+    private String mTokenStr;
 
     @Override
     protected int getLayoutRes() {
@@ -51,10 +59,28 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = findView(R.id.rv_content);
         mProgressBar = findView(R.id.pb_content);
+
+        OkHttpUtils.post().url("https://service.plutuspay.com/invoice")
+                .addParams("sn","98261711361364")
+                .addParams("scanText","http://w.url.cn/s/AoOkoCq")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                L.e(TAG,e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                L.e(TAG,response);
+            }
+        });
     }
 
     @Override
     protected void initData() {
+        mAccessToken = AccessTokenKeeper.readAccessToken(mActivity);
+        mTokenStr = mAccessToken.getToken();
+        L.e(TAG, "token -->" + mTokenStr);
         mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mResults = new ArrayList<>();
@@ -62,7 +88,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mExploreAdapter = new ExploreAdapter(mResults);
         mRecyclerView.setAdapter(mExploreAdapter);
         mExplorePresenter = new ExplorePresenter(this);
-        mExplorePresenter.getExplore(pageOffset, IHttpService.TYPE_REFRESH);
+//        mExplorePresenter.getExplore(mTokenStr, pageOffset, IHttpService.TYPE_REFRESH);
     }
 
 
@@ -74,9 +100,9 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (mLayoutManager.findLastVisibleItemPosition() == mResults.size()-1&&newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (mResults.size() > 0 && mLayoutManager.findLastVisibleItemPosition() == mResults.size() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    mExplorePresenter.getExplore(++pageOffset, IHttpService.TYPE_MORE);
+                    mExplorePresenter.getExplore(mTokenStr, ++pageOffset, IHttpService.TYPE_MORE);
                 }
             }
         });
@@ -105,7 +131,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
      * @param result  返回结果
      */
     @Override
-    public void onResponse(int reqType, List<ExploreBean.ResultsBean> result) {
+    public void onResponse(int reqType, List<ExploreBean.StatusesBean> result) {
         switch (reqType) {
             case IHttpService.TYPE_REFRESH:
                 mResults.clear();
@@ -163,7 +189,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         pageOffset = 1;
-        mExplorePresenter.getExplore(pageOffset, IHttpService.TYPE_REFRESH);
+        mExplorePresenter.getExplore(mTokenStr, pageOffset, IHttpService.TYPE_REFRESH);
     }
 
 }

@@ -60,7 +60,34 @@ public interface Constants {
                     + "follow_app_official_microblog," + "invitation_write";
 
 
-    public static final String GRANT_TYPE = "authorization_code";
+    String GRANT_TYPE = "authorization_code";
 
     String APP_SECRET = "d7992d9de70f7840acedbec18e4fede5";
+
+    /* ----------获取当前登录用户及其所关注的（授权用户）的最新微博 http://open.weibo.com/wiki/2/statuses/home_timeline--------------/
+    /**
+     * 默认请求一次返回的数量
+     */
+    int DEFAULT_COUNT = 20;
+
+    /**
+     * 默认拉取第一页的数据
+     */
+    int DEFAULT_PAGE = 1;
+
+    /**
+     * 是否只获取当前应用的数据。0为否（所有数据），1为是（仅当前应用），默认为0。
+     */
+    int DEFAULT_BASE_APP = 0;
+
+    /**
+     * 过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0。
+     */
+    int DEFAULT_FEATURE = 0;
+
+    /**
+     * 返回值中user字段开关，0：返回完整user字段、1：user字段仅返回user_id，默认为0。
+     */
+
+    int DEFAULT_TRIM_USER = 0;
 }

@@ -49,7 +49,23 @@ public class RetrofitManager {
         LoggingInterceptor loggingInterceptor = null;
         loggingInterceptor = new LoggingInterceptor();
         return new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+//                .addInterceptor(loggingInterceptor)
+//                .addInterceptor(new Interceptor() {
+//                                    @Override
+//                                    public Response intercept(Chain chain) throws IOException {
+//                                        Request request = chain.request();
+//                                        HttpUrl.Builder builder = request.url().newBuilder();
+//                                        if (MyApplication.isLogin()) {
+//                                            UserInfo userInfo = MyApplication.getUserInfo();
+//                                            if (userInfo != null) {
+//                                                builder.addQueryParameter("userId", userInfo.getUserId());
+//                                                builder.addQueryParameter("sessionId", userInfo.getSessionId());
+//                                            }
+//                                        }
+//                                        return chain.proceed(request.newBuilder().url(builder.build()).build());
+//                                    }
+//                                }
+//                )
                 .build();
     }
 }
