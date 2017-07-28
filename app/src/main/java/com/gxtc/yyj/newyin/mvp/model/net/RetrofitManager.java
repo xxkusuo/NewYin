@@ -12,12 +12,12 @@ public class RetrofitManager {
 
     private static RetrofitManager instance;
 
-    private RetrofitManager(){
+    private RetrofitManager() {
     }
 
     public static RetrofitManager getInstance() {
         if (instance == null) {
-            synchronized(RetrofitManager.class) {
+            synchronized (RetrofitManager.class) {
                 if (instance == null) {
                     instance = new RetrofitManager();
                     initRetrofit();
@@ -46,26 +46,9 @@ public class RetrofitManager {
 
 
     private static OkHttpClient genericClient() {
-        LoggingInterceptor loggingInterceptor = null;
-        loggingInterceptor = new LoggingInterceptor();
+        LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-//                .addInterceptor(new Interceptor() {
-//                                    @Override
-//                                    public Response intercept(Chain chain) throws IOException {
-//                                        Request request = chain.request();
-//                                        HttpUrl.Builder builder = request.url().newBuilder();
-//                                        if (MyApplication.isLogin()) {
-//                                            UserInfo userInfo = MyApplication.getUserInfo();
-//                                            if (userInfo != null) {
-//                                                builder.addQueryParameter("userId", userInfo.getUserId());
-//                                                builder.addQueryParameter("sessionId", userInfo.getSessionId());
-//                                            }
-//                                        }
-//                                        return chain.proceed(request.newBuilder().url(builder.build()).build());
-//                                    }
-//                                }
-//                )
                 .build();
     }
 }

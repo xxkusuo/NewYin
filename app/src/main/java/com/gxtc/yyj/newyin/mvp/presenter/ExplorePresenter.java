@@ -73,22 +73,9 @@ public class ExplorePresenter {
         Explore explore = ExploreDB.readExploreData();
         ArrayList<ExploreBean.StatusesBean> list = new ArrayList<ExploreBean.StatusesBean>();
         if (explore != null) {
-
             Gson gson = new Gson();
-            ExploreBean exploreBean = new ExploreBean();
-            exploreBean.setUveBlank(explore.getUveBlank());
-            exploreBean.setHasUnread(explore.getHasUnread());
-            exploreBean.setHasVisible(explore.getHasVisible());
-            exploreBean.setInterval(explore.getInterval());
-            exploreBean.setMaxId(explore.getMaxId());
-            exploreBean.setNextCursor(explore.getNextCursor());
-            exploreBean.setPreviousCursor(explore.getPreviousCursor());
-            exploreBean.setTotalNumber(explore.getTotalNumber());
-            exploreBean.setSinceId(explore.getSinceId());
             ExploreBean.StatusesBean[] statusesBean = gson.fromJson(explore.getStatus(), ExploreBean.StatusesBean[].class);
             list.addAll(Arrays.asList(statusesBean));
-                    /*----还有ad和advertises没有赋值----*/
-            exploreBean.setStatuses(list);
         }
         mExploreView.onResponse(reqType, list);
     }

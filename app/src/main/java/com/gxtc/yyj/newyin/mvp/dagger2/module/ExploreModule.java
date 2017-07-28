@@ -8,6 +8,7 @@ import dagger.Provides;
 
 /**
  * Created by Jam on 2017/7/19.
+ * dagger2 module 弃用
  */
 
 @Module

@@ -141,7 +141,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private void notifyRefresh(List<ExploreBean.StatusesBean> result) {
         mResults.clear();
         mResults.addAll(result);
-        mExploreAdapter.notifyItemRangeChanged(mResults.size(), result.size());
+        mExploreAdapter.notifyItemRangeChanged(0, result.size());
     }
 
     /**
