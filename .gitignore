@@ -6,4 +6,12 @@
 .DS_Store
 /build
 /captures
-.externalNativeBuild
+
+*.apk  
+*.dex
+*.class
+
+bin/  
+gen/  
+out/
+proguard/ 

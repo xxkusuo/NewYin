@@ -8,7 +8,6 @@ import java.util.List;
  * Created by Jam on 2017/7/18.
  *
  */
-
 public class ExploreBean {
 
 
@@ -30,7 +29,7 @@ public class ExploreBean {
     @SerializedName("hasvisible")
     private boolean hasVisible;
     @SerializedName("previous_cursor")
-    private int previousCursor;
+    private long previousCursor;
     @SerializedName("next_cursor")
     private long nextCursor;
     @SerializedName("total_number")
@@ -56,11 +55,11 @@ public class ExploreBean {
         this.hasVisible = hasVisible;
     }
 
-    public int getPreviousCursor() {
+    public long getPreviousCursor() {
         return previousCursor;
     }
 
-    public void setPreviousCursor(int previousCursor) {
+    public void setPreviousCursor(long previousCursor) {
         this.previousCursor = previousCursor;
     }
 
@@ -195,7 +194,7 @@ public class ExploreBean {
         @SerializedName("created_at")
         private String createdAt;
         private long id;
-        private String mid;
+        private long mid;
         @SerializedName("idstr")
         private String idStr;
         private String text;
@@ -231,7 +230,7 @@ public class ExploreBean {
         private int mlevel;
         private VisibleBean visible;
         @SerializedName("biz_feature")
-        private int bizFeature;
+        private long bizFeature;
         private int hasActionTypeCard;
         private String rid;
         private int userType;
@@ -280,11 +279,11 @@ public class ExploreBean {
             this.id = id;
         }
 
-        public String getMid() {
+        public long getMid() {
             return mid;
         }
 
-        public void setMid(String mid) {
+        public void setMid(long mid) {
             this.mid = mid;
         }
 
@@ -464,7 +463,7 @@ public class ExploreBean {
             this.visible = visible;
         }
 
-        public int getBizFeature() {
+        public long getBizFeature() {
             return bizFeature;
         }
 
@@ -682,7 +681,7 @@ public class ExploreBean {
              * story_read_state : -1
              */
 
-            private int id;
+            private long id;
             @SerializedName("idstr")
             private String idStr;
             @SerializedName("class")
@@ -787,11 +786,11 @@ public class ExploreBean {
             @SerializedName("story_read_state")
             private int storyReadState;
 
-            public int getId() {
+            public long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(long id) {
                 this.id = id;
             }
 
@@ -1426,7 +1425,7 @@ public class ExploreBean {
             private int mlevel;
             private VisibleBeanX visible;
             @SerializedName("biz_feature")
-            private int bizFeature;
+            private long bizFeature;
             @SerializedName("page_type")
             private int pageType;
             private int hasActionTypeCard;
@@ -1649,11 +1648,11 @@ public class ExploreBean {
                 this.visible = visible;
             }
 
-            public int getBizFeature() {
+            public long getBizFeature() {
                 return bizFeature;
             }
 
-            public void setBizFeature(int bizFeature) {
+            public void setBizFeature(long bizFeature) {
                 this.bizFeature = bizFeature;
             }
 

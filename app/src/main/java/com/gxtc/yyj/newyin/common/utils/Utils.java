@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 工具类，封装常用的一些方法
@@ -146,12 +147,12 @@ public class Utils {
 
     /**
      * 格式化来源source
+     * <a href="http://app.weibo.com/t/feed/6vtZb0" rel="nofollow">微博 weibo.com</a>
      */
 
     public static String formatSource(String sourceStr) {
         if (!TextUtils.isEmpty(sourceStr)) {
-            String source = sourceStr.substring(sourceStr.indexOf("<") + 1, sourceStr.lastIndexOf(">"));
-            return source;
+            return sourceStr.substring(sourceStr.indexOf(">") + 1, sourceStr.lastIndexOf("<"));
         }
         return null;
     }
@@ -165,7 +166,7 @@ public class Utils {
      */
     public static String formatTime(String timeStr) {
         if (!TextUtils.isEmpty(timeStr)) {
-            SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+            SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.CANADA);
             try {
                 Date date = format.parse(timeStr.trim());
                 long time = date.getTime();//得到传入的时间
@@ -179,18 +180,19 @@ public class Utils {
                 int hour = (int) ((currentTimeMillis - time) / 1000 / 60 / 60);
                 if (hour < 24) {
                     //处于同一天 计算是否在1个小时之内
-                    float l = (((currentTimeMillis - time) - time) * 1f / 1000 / 60 / 60);
+                    float l = ((currentTimeMillis - time) * 1f / 1000 / 60 / 60);
                     if (l < 1) {
-                        return (int) (l * 60 + 0.5f) + "分钟前";//在1小时内就直接显示多少分钟
+                        int min = (int) (l * 60 + 0.5f);
+                        return min == 0 ? "刚刚" : min + "分钟前";//在1小时内就直接显示多少分钟
                     } else {
                         return partDay;//否则显示时今天多少点发布的
                     }
                 } else {
                     if (hour < 72) {
                         if (hour < 48) {
-                                return "昨天 " + partTime;
+                            return "昨天 " + partTime;
                         } else {
-                                return "前天 " + partTime;
+                            return "前天 " + partTime;
                         }
                     } else {
                         return dayStr;

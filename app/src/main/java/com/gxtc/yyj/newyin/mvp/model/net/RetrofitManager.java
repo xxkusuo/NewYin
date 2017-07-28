@@ -49,7 +49,7 @@ public class RetrofitManager {
         LoggingInterceptor loggingInterceptor = null;
         loggingInterceptor = new LoggingInterceptor();
         return new OkHttpClient.Builder()
-//                .addInterceptor(loggingInterceptor)
+                .addInterceptor(loggingInterceptor)
 //                .addInterceptor(new Interceptor() {
 //                                    @Override
 //                                    public Response intercept(Chain chain) throws IOException {

@@ -3,6 +3,7 @@ package com.gxtc.yyj.newyin.mvp.ui.fragment;
 import android.animation.Animator;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,14 +22,11 @@ import com.gxtc.yyj.newyin.mvp.ui.adapter.ExploreAdapter;
 import com.gxtc.yyj.newyin.mvp.ui.view.IExploreView;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.Call;
 
 /**
  * Created by Jam on 2017/7/17.
@@ -60,35 +58,21 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mRecyclerView = findView(R.id.rv_content);
         mProgressBar = findView(R.id.pb_content);
 
-        OkHttpUtils.post().url("https://service.plutuspay.com/invoice")
-                .addParams("sn","98261711361364")
-                .addParams("scanText","http://w.url.cn/s/AoOkoCq")
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                L.e(TAG,e.getMessage());
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                L.e(TAG,response);
-            }
-        });
     }
 
     @Override
     protected void initData() {
         mAccessToken = AccessTokenKeeper.readAccessToken(mActivity);
         mTokenStr = mAccessToken.getToken();
-        L.e(TAG, "token -->" + mTokenStr);
         mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mResults = new ArrayList<>();
         mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, Color.parseColor("#f1efef"), padding, Color.parseColor("#f1efef")));
         mExploreAdapter = new ExploreAdapter(mResults);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mExploreAdapter);
         mExplorePresenter = new ExplorePresenter(this);
-//        mExplorePresenter.getExplore(mTokenStr, pageOffset, IHttpService.TYPE_REFRESH);
+        mExplorePresenter.getExplore(IHttpService.TYPE_CACHE);
     }
 
 
@@ -131,16 +115,42 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
      * @param result  返回结果
      */
     @Override
-    public void onResponse(int reqType, List<ExploreBean.StatusesBean> result) {
+    public void onResponse(int reqType, final List<ExploreBean.StatusesBean> result) {
         switch (reqType) {
             case IHttpService.TYPE_REFRESH:
-                mResults.clear();
-                mResults.addAll(result);
+                notifyRefresh(result);
                 break;
             case IHttpService.TYPE_MORE:
-                mResults.addAll(result);
+                notifyMore(result);
+                break;
+            case IHttpService.TYPE_CACHE:
+                if (result.size() == 0) {
+                    mExplorePresenter.getExplore(mTokenStr, pageOffset, IHttpService.TYPE_REFRESH);
+                } else {
+                    notifyRefresh(result);
+                }
                 break;
         }
+    }
+
+    /**
+     * 刷新显示
+     *
+     * @param result 回调结果
+     */
+    private void notifyRefresh(List<ExploreBean.StatusesBean> result) {
+        mResults.clear();
+        mResults.addAll(result);
+        mExploreAdapter.notifyItemRangeChanged(mResults.size(), result.size());
+    }
+
+    /**
+     * 刷新加载进来的数据 并且做动画
+     *
+     * @param result 回调结果
+     */
+    private void notifyMore(final List<ExploreBean.StatusesBean> result) {
+        mResults.addAll(result);
         mProgressBar
                 .animate()
                 .translationY(mProgressBar.getHeight())
@@ -156,7 +166,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
                     public void onAnimationEnd(Animator animation) {
                         mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setTranslationY(0);
-                        mExploreAdapter.notifyDataSetChanged();
+                        mExploreAdapter.notifyItemRangeChanged(mResults.size(), result.size());
                     }
 
                     @Override
@@ -180,6 +190,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
      */
     @Override
     public void error(Observable observable, Throwable throwable) {
+        L.e(TAG, throwable.getMessage());
         showToast(throwable.getMessage());
     }
 

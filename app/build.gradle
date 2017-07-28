@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin:'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -16,6 +17,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    /*针对greenDao的一些配置*/
+    greendao {
+        schemaVersion 1 //数据库版本号
+        daoPackage 'com.gxtc.yyj.newyin.mvp.greendao.dao' //自动生成的工具类的包名
+        targetGenDir 'src/main/java' //java路径
     }
 }
 
@@ -45,9 +53,11 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.liaoinstan.springview:library:1.2.6'
     compile 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
-    compile 'com.zhy:okhttputils:2.6.2'
-    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    //GreenDao
+    compile 'org.greenrobot:greendao:3.2.2' // add library
+    //更新帮助类
+    compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v1.4.0'
+
 }

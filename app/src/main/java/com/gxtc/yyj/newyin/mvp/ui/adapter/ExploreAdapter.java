@@ -2,6 +2,8 @@ package com.gxtc.yyj.newyin.mvp.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
+import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -29,6 +31,7 @@ public class ExploreAdapter extends BaseQuickAdapter<ExploreBean.StatusesBean, E
                 .load(user.getAvatarLarge())
                 .into(holder.ivAuthorHeader);
         holder.tvAuthorName.setText(user.getScreenName());
+        holder.tvPubSource.setVisibility(TextUtils.isEmpty(status.getSource()) ? View.GONE : View.VISIBLE);
         holder.tvPubSource.setText("来自 " + Utils.formatSource(status.getSource()));
         holder.tvPubContent.setText(status.getText());
         holder.tvPubTime.setText(Utils.formatTime(status.getCreatedAt()));
