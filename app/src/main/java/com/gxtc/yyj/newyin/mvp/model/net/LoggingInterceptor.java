@@ -27,7 +27,6 @@ public class LoggingInterceptor implements Interceptor {
 
         String method = request.method();
         StringBuilder sb = new StringBuilder();
-        ;
         if ("POST".equals(method)) {
             if (request.body() instanceof FormBody) {
                 FormBody body = (FormBody) request.body();
@@ -36,6 +35,15 @@ public class LoggingInterceptor implements Interceptor {
                 }
                 sb.delete(sb.length() - 1, sb.length());
             }
+        }
+
+        if ("GET".equals(method)) {
+            String[] params = request.url().toString().split("\\?")[1].split("&");
+            for (String param :
+                    params) {
+                sb.append(param + ",");
+            }
+            sb.delete(sb.length() - 1, sb.length());
         }
 
         //这里不能直接使用response.body().string()的方式输出日志
