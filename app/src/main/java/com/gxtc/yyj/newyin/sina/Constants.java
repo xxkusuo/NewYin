@@ -28,7 +28,9 @@ public interface Constants {
     /**
      * 当前 DEMO 应用的 APP_KEY，第三方应用应该使用自己的 APP_KEY 替换该 APP_KEY
      */
-    public static final String APP_KEY = "2613431306";
+    public static final String APP_KEY = "2731746823";//Software12
+//    public static final String APP_KEY = "2807735068";//GxtcTest
+//    public static final String APP_KEY = "2613431306"; //PersonalYin
 
     /**
      * 当前 DEMO 应用的回调页，第三方应用可以使用自己的回调页。
@@ -62,7 +64,9 @@ public interface Constants {
 
     String GRANT_TYPE = "authorization_code";
 
-    String APP_SECRET = "d7992d9de70f7840acedbec18e4fede5";
+    String APP_SECRET = "297fc4945e1fd44285598790388de630";//Software12
+//    String APP_SECRET = "7c0c016b7bc5cf88580fffe0075b9eb8";//GxtcTest
+//    String APP_SECRET = "d7992d9de70f7840acedbec18e4fede5";//PersonalYin
 
     /* ----------获取当前登录用户及其所关注的（授权用户）的最新微博 http://open.weibo.com/wiki/2/statuses/home_timeline--------------/
     /**

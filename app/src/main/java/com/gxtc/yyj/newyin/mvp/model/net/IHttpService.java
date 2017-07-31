@@ -1,6 +1,7 @@
 package com.gxtc.yyj.newyin.mvp.model.net;
 
 import com.gxtc.yyj.newyin.mvp.model.bean.ExploreBean;
+import com.gxtc.yyj.newyin.mvp.model.bean.UserInfo;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -29,4 +30,8 @@ public interface IHttpService {
             @Query("feature") int feature,
             @Query("trim_user") int trimUser
     );
+
+
+    @GET("2/users/show.json")
+    Observable<UserInfo> updateUserInfo(@Query("access_token") String accessToken, @Query("uid") String uid);
 }

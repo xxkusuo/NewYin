@@ -9,4 +9,5 @@
     <color name="color_ripple">#ffeeeeee</color>
     <color name="color_white">#ffffff</color>
     <color name="pb_indeterminate_tint">#000</color>
+    <color name="color_divider">#fcf7f7</color>
 </resources>

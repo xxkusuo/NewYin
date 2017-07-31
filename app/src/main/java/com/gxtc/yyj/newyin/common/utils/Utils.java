@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -177,23 +178,24 @@ public class Utils {
                 String partTime = split[1];
                 long currentTimeMillis = System.currentTimeMillis();//获取当前时间比对
                 //判断是否处于同一天
+                SimpleDateFormat limit = new SimpleDateFormat("yyyy MM-dd HH:mm:ss");
+                Date limitDate = limit.parse(Calendar.getInstance().get(Calendar.YEAR) + " " + partDay + " 23:59:59");
+                long limitTime = limitDate.getTime();//限制时间 若大于当前时间 说明处于一天之内 若小于当前时间 说明在今天之前
                 int hour = (int) ((currentTimeMillis - time) / 1000 / 60 / 60);
-                if (hour < 24) {
+                if (limitTime >= currentTimeMillis) {
                     //处于同一天 计算是否在1个小时之内
                     float l = ((currentTimeMillis - time) * 1f / 1000 / 60 / 60);
                     if (l < 1) {
                         int min = (int) (l * 60 + 0.5f);
                         return min == 0 ? "刚刚" : min + "分钟前";//在1小时内就直接显示多少分钟
                     } else {
-                        return partDay;//否则显示时今天多少点发布的
+                        return partTime;//否则显示时今天多少点发布的
                     }
                 } else {
-                    if (hour < 72) {
-                        if (hour < 48) {
-                            return "昨天 " + partTime;
-                        } else {
-                            return "前天 " + partTime;
-                        }
+                    if (limitTime + 24 * 60 * 60 * 1000 >= currentTimeMillis) {
+                        return "昨天 " + partTime;
+                    } else if (limitTime + 48 * 60 * 60 * 1000 >= currentTimeMillis) {
+                        return "前天 " + partTime;
                     } else {
                         return dayStr;
                     }
@@ -205,6 +207,12 @@ public class Utils {
             return "";
         }
         return "";
+    }
+
+
+    private boolean isToday(long time) {
+        long currentTimeMillis = System.currentTimeMillis();
+        return false;
     }
 
 }

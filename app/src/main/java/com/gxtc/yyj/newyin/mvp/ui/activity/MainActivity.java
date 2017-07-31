@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +20,18 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseActivity;
+import com.gxtc.yyj.newyin.mvp.greendao.bean.User;
+import com.gxtc.yyj.newyin.mvp.greendao.operator.UserDB;
+import com.gxtc.yyj.newyin.mvp.model.bean.UserInfo;
 import com.gxtc.yyj.newyin.mvp.ui.fragment.ExploreFragment;
 import com.gxtc.yyj.newyin.mvp.ui.fragment.MusicFragment;
 import com.gxtc.yyj.newyin.mvp.ui.fragment.WelfareFragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,7 +42,9 @@ public class MainActivity extends BaseActivity
     private Toolbar mToolbar;
     private int offset;
     private AppBarLayout mAppBarLayout;
-
+    private CircleImageView mHeaderImageView;
+    private TextView mUserNameText;
+    private TextView mUserDesText;
 
     @Override
     protected int getLayoutRes() {
@@ -68,6 +78,11 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        mHeaderImageView = (CircleImageView) headerView.findViewById(R.id.iv_user_header);
+        mUserNameText = (TextView) headerView.findViewById(R.id.tv_user_name);
+        mUserDesText = (TextView) headerView.findViewById(R.id.tv_user_des);
+        setupUserInfo();//设置用户信息
 
         mFlContent = (FrameLayout) findViewById(R.id.fl_content);
         mTabContentBottom = (FragmentTabHost) findViewById(R.id.ftb_main);
@@ -82,15 +97,32 @@ public class MainActivity extends BaseActivity
         });
     }
 
+    /**
+     * 设置用户信息
+     */
+    private void setupUserInfo() {
+        User user = UserDB.readUserInfo();
+        if (user != null) {
+            Gson gson = new Gson();
+            UserInfo userInfo = gson.fromJson(user.getUserInfo(), UserInfo.class);
+            mUserDesText.setText(TextUtils.isEmpty(userInfo.getDescription()) ? "这个人很懒，没有留下有用的信息" : userInfo.getDescription());
+            mUserNameText.setText(userInfo.getScreen_name());
+            Glide.with(this)
+                    .load(userInfo.getAvatar_large())
+                    .into(mHeaderImageView)
+            ;
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (offset!=0){
-            mAppBarLayout.setExpanded(true,true);
-        }else {
+        } else if (offset != 0) {
+            mAppBarLayout.setExpanded(true, true);
+        } else {
             super.onBackPressed();
         }
     }
@@ -164,13 +196,13 @@ public class MainActivity extends BaseActivity
             //添加tab标签页详细 注意这里用法 title是作为一个tag传入用于区别页面的
             TabHost.TabSpec tabSpec = mTabContentBottom.newTabSpec(title);
             //设置指示的view 就是底部标签的名字的View
-            View indicatorView = View.inflate(this,R.layout.view_tab_indicator,null);
+            View indicatorView = View.inflate(this, R.layout.view_tab_indicator, null);
             //找到指示view的控件
             TextView tvTitle = (TextView) indicatorView.findViewById(R.id.tab_title);
             //设置view中的标题
             tvTitle.setText(title);
             //设置标题顶部的图片
-            tvTitle.setCompoundDrawablesWithIntrinsicBounds(0,resId,0,0);
+            tvTitle.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
             //设置指示view到每个标签页
             tabSpec.setIndicator(indicatorView);
 
@@ -182,8 +214,8 @@ public class MainActivity extends BaseActivity
              */
 
             Bundle bundle = new Bundle();
-            bundle.putString("title",title);//传递数据
-            mTabContentBottom.addTab(tabSpec,clazz,bundle);
+            bundle.putString("title", title);//传递数据
+            mTabContentBottom.addTab(tabSpec, clazz, bundle);
 
 
         }

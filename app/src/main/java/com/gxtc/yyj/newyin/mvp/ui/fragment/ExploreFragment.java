@@ -40,7 +40,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private int pageOffset = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private int padding = Global.dp2px(12);
+    private int padding = Global.dp2px(8);
     private ExploreAdapter mExploreAdapter;
     private ProgressBar mProgressBar;
     private Oauth2AccessToken mAccessToken;
@@ -57,7 +57,6 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = findView(R.id.rv_content);
         mProgressBar = findView(R.id.pb_content);
-
     }
 
     @Override
@@ -67,7 +66,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mResults = new ArrayList<>();
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, Color.parseColor("#f1efef"), padding, Color.parseColor("#f1efef")));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, Color.parseColor("#fcf7f7"), padding, Color.parseColor("#fcf7f7")));
         mExploreAdapter = new ExploreAdapter(mResults);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mExploreAdapter);

@@ -12,6 +12,7 @@ import com.gxtc.yyj.newyin.sina.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -47,7 +48,7 @@ public class ExplorePresenter {
 
                     @Override
                     public void onSuccess(int reqType, ExploreBean exploreBean) {
-                        saveExploreData(exploreBean);
+                        saveExploreData(reqType, exploreBean);
                         mExploreView.refreshComplete();
                         mExploreView.onResponse(reqType, exploreBean.getStatuses());//手动转换数据
                     }
@@ -57,9 +58,13 @@ public class ExplorePresenter {
     /**
      * 保存请求到的数据
      *
+     * @param reqType     请求类型
      * @param exploreBean 上一次得到的数据
      */
-    private void saveExploreData(ExploreBean exploreBean) {
+    private void saveExploreData(int reqType, ExploreBean exploreBean) {
+        if (reqType == IHttpService.TYPE_REFRESH) {
+            ExploreDB.deleteExploreData();
+        }
         ExploreDB.saveExploreData(exploreBean);
     }
 
@@ -70,12 +75,15 @@ public class ExplorePresenter {
      * @param reqType 请求类型
      */
     public void getExplore(final int reqType) {
-        Explore explore = ExploreDB.readExploreData();
+        List<Explore> exploreList = ExploreDB.readExploreData();
         ArrayList<ExploreBean.StatusesBean> list = new ArrayList<ExploreBean.StatusesBean>();
-        if (explore != null) {
-            Gson gson = new Gson();
-            ExploreBean.StatusesBean[] statusesBean = gson.fromJson(explore.getStatus(), ExploreBean.StatusesBean[].class);
-            list.addAll(Arrays.asList(statusesBean));
+        Gson gson = new Gson();
+        if (exploreList != null && exploreList.size() > 0) {
+            for (Explore explore :
+                    exploreList) {
+                ExploreBean.StatusesBean[] statusesBean = gson.fromJson(explore.getStatus(), ExploreBean.StatusesBean[].class);
+                list.addAll(Arrays.asList(statusesBean));
+            }
         }
         mExploreView.onResponse(reqType, list);
     }

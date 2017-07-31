@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.gxtc.yyj.newyin.mvp.greendao.dao.DaoMaster;
 import com.gxtc.yyj.newyin.mvp.greendao.dao.ExploreDao;
+import com.gxtc.yyj.newyin.mvp.greendao.dao.UserDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -18,7 +19,8 @@ public class GreenDaoOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         MigrationHelper.migrate(
                 db,
-                ExploreDao.class
+                ExploreDao.class,
+                UserDao.class
         );
     }
 }

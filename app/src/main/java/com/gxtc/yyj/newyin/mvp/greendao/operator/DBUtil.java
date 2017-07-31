@@ -6,6 +6,7 @@ import com.gxtc.yyj.newyin.common.constant.Const;
 import com.gxtc.yyj.newyin.mvp.greendao.dao.DaoMaster;
 import com.gxtc.yyj.newyin.mvp.greendao.dao.DaoSession;
 import com.gxtc.yyj.newyin.mvp.greendao.dao.ExploreDao;
+import com.gxtc.yyj.newyin.mvp.greendao.dao.UserDao;
 
 import org.greenrobot.greendao.async.AsyncSession;
 
@@ -88,4 +89,15 @@ public class DBUtil {
     public ExploreDao getExploreDao() {
         return getDaoSession().getExploreDao();
     }
+
+
+    /**
+     * 得到用户数据的操作DAO
+     *
+     * @return UserDao
+     */
+    public UserDao getUserDao() {
+        return getDaoSession().getUserDao();
+    }
+
 }

@@ -7,6 +7,8 @@ import com.gxtc.yyj.newyin.mvp.model.bean.ExploreBean;
 
 import org.greenrobot.greendao.async.AsyncOperationListener;
 
+import java.util.List;
+
 /**
  * Created by Jam on 2017/7/28.
  */
@@ -67,7 +69,15 @@ public class ExploreDB extends BaseDB {
      *
      * @return Explore
      */
-    public static Explore readExploreData() {
-        return mExploreDao.queryBuilder().build().unique();
+    public static List<Explore> readExploreData() {
+        return mExploreDao.queryBuilder().build().list();
+    }
+
+
+    /**
+     * 删除本地保存的旧数据 同步
+     */
+    public static void deleteExploreData() {
+        mExploreDao.deleteAll();
     }
 }
