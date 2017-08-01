@@ -60,4 +60,7 @@ dependencies {
     //更新帮助类
     compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v1.4.0'
 
+    compile 'com.facebook.fresco:fresco:0.12.0'
+    compile 'com.facebook.fresco:animated-gif:0.12.0'
+
 }

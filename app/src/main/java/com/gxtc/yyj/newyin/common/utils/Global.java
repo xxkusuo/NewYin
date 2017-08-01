@@ -49,6 +49,10 @@ public class Global {
         return (int) (dp * mDensity);
     }
 
+    public static int px2dp(int px) {
+        return (int) (px / mDensity);
+    }
+
     public static View inflate(int layoutResID, ViewGroup parent) {
         return LayoutInflater.from(mContext).inflate(layoutResID, parent, false);
     }

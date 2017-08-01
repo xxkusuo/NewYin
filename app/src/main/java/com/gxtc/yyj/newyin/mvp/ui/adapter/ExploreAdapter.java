@@ -35,7 +35,9 @@ public class ExploreAdapter extends BaseQuickAdapter<ExploreBean.StatusesBean, E
         holder.tvPubSource.setText("来自 " + Utils.formatSource(status.getSource()));
         holder.tvPubContent.setText(status.getText());
         holder.tvPubTime.setText(Utils.formatTime(status.getCreatedAt()));
-        holder.rvExploreImg.setLayoutManager(new GridLayoutManager(mContext, 3));
+        if (status.getPicUrls() != null && status.getPicUrls().size() > 0) {
+            holder.rvExploreImg.setLayoutManager(new GridLayoutManager(mContext, status.getPicUrls().size() > 3 ? 3 : status.getPicUrls().size()));
+        }
         holder.rvExploreImg.setAdapter(new ExploreImageAdapter(status.getPicUrls()));
     }
 

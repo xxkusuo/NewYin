@@ -1,12 +1,12 @@
 package com.gxtc.yyj.newyin.mvp.ui.activity;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.gxtc.yyj.newyin.R;
 import com.gxtc.yyj.newyin.common.base.BaseActivity;
+import com.gxtc.yyj.newyin.common.utils.Global;
 import com.gxtc.yyj.newyin.mvp.model.bean.UserInfo;
 import com.gxtc.yyj.newyin.mvp.model.net.IHttpService;
 import com.gxtc.yyj.newyin.mvp.presenter.UserInfoPresenter;
@@ -37,6 +37,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @Override
     protected void initView() {
+        Global.setNoStatusBarFullMode(this);
         mSplashCenterLayout = findView(R.id.ll_splash);
         mCenterProgress = findView(R.id.pb_splash);
     }
@@ -100,8 +101,8 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @Override
     public void onUpdating() {
-        mSplashCenterLayout.setVisibility(View.GONE);
-        mCenterProgress.setVisibility(View.VISIBLE);
+//        mSplashCenterLayout.setVisibility(View.GONE);
+//        mCenterProgress.setVisibility(View.VISIBLE);
     }
 
     @Override

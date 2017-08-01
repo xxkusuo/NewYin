@@ -1,7 +1,6 @@
 package com.gxtc.yyj.newyin.mvp.ui.fragment;
 
 import android.animation.Animator;
-import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,10 +40,12 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private int padding = Global.dp2px(8);
+    private int dividerHeight = Global.dp2px(6);
     private ExploreAdapter mExploreAdapter;
     private ProgressBar mProgressBar;
     private Oauth2AccessToken mAccessToken;
     private String mTokenStr;
+    private View mFooterView;
 
     @Override
     protected int getLayoutRes() {
@@ -56,7 +57,8 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout = findView(R.id.srl_content);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = findView(R.id.rv_content);
-        mProgressBar = findView(R.id.pb_content);
+        mFooterView = View.inflate(mActivity, R.layout.view_footer, null);
+        mProgressBar = (ProgressBar) mFooterView.findViewById(R.id.pb_footer);
     }
 
     @Override
@@ -66,12 +68,13 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
         mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mResults = new ArrayList<>();
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, Color.parseColor("#fcf7f7"), padding, Color.parseColor("#fcf7f7")));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(padding, dividerHeight, true));
         mExploreAdapter = new ExploreAdapter(mResults);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mExploreAdapter);
         mExplorePresenter = new ExplorePresenter(this);
         mExplorePresenter.getExplore(IHttpService.TYPE_CACHE);
+        mExploreAdapter.addFooterView(mFooterView);
     }
 
 
@@ -83,8 +86,7 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (mResults.size() > 0 && mLayoutManager.findLastVisibleItemPosition() == mResults.size() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mProgressBar.setVisibility(View.VISIBLE);
+                if (mResults.size() > 0 && mLayoutManager.findLastVisibleItemPosition() == mResults.size() && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     mExplorePresenter.getExplore(mTokenStr, ++pageOffset, IHttpService.TYPE_MORE);
                 }
             }
@@ -163,7 +165,6 @@ public class ExploreFragment extends BaseFragment implements SwipeRefreshLayout.
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mProgressBar.setVisibility(View.GONE);
                         mProgressBar.setTranslationY(0);
                         mExploreAdapter.notifyItemRangeChanged(mResults.size(), result.size());
                     }

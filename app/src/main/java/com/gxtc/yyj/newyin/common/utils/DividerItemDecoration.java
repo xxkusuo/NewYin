@@ -18,6 +18,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int mDividerColor = 0;//默认为0透明
     private int mFirstItemToTop = 0;
     private int mFirstItemToTopColor = 0;//默认透明
+    private boolean mHasFooter;
 
 
     public DividerItemDecoration(int dividerHeight) {
@@ -25,16 +26,22 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public DividerItemDecoration(int dividerHeight, @ColorInt int dividerColor) {
-        this(0, 0, dividerHeight, dividerColor);
+        this(0, 0, dividerHeight, dividerColor, false);
     }
 
-    public DividerItemDecoration(int firstItemToTop, @ColorInt int firstItemToTopColor, int dividerHeight, @ColorInt int dividerColor) {
+    public DividerItemDecoration(int firstItemToTop, int dividerHeight, boolean hasFooter) {
+        this(firstItemToTop, 0, dividerHeight, 0, hasFooter);
+    }
+
+    public DividerItemDecoration(int firstItemToTop, @ColorInt int firstItemToTopColor, int dividerHeight, @ColorInt int dividerColor, boolean hasFooter) {
         this.mFirstItemToTop = firstItemToTop;//第一个item距离RecyclerView顶部的距离
         this.mDividerHeight = dividerHeight;//item之间的间距
         this.mDividerColor = dividerColor;//item间间距的颜色
         this.mFirstItemToTopColor = firstItemToTopColor;//第一个item距离顶部的颜色
+        this.mHasFooter = hasFooter;
         setUp(dividerColor);
     }
+
 
     private void setUp(@ColorInt int color) {
         mPaint = new Paint();
@@ -54,6 +61,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         if (parent.getChildAdapterPosition(view) != 0) {//获取view在adapter中的位置 当不为0的时候
             outRect.top = mDividerHeight;
+            if (mHasFooter){
+                if (parent.getChildAdapterPosition(view) == parent.getAdapter().getItemCount() - 1)
+                    outRect.top = 0;
+            }
         } else {
             outRect.top = mFirstItemToTop;
         }
@@ -67,22 +78,20 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
-        if (mDividerColor != 0) {
-            int itemCount = parent.getChildCount();
-            for (int i = 0; i < itemCount; i++) {
-                View view = parent.getChildAt(i);
-                int index = parent.getChildAdapterPosition(view);
-                float left = parent.getPaddingLeft();
-                float right = parent.getWidth() - parent.getPaddingRight();
-                if (index == 0) {
-                    mPaint.setColor(mFirstItemToTopColor);
-                    c.drawRect(left, view.getTop() - mFirstItemToTop, right, view.getTop(), mPaint);
-                } else {
-                    mPaint.setColor(mDividerColor);
-                    float top = view.getTop() - mDividerHeight;
-                    float bottom = view.getTop();
-                    c.drawRect(left, top, right, bottom, mPaint);
-                }
+        int itemCount = parent.getChildCount();
+        for (int i = 0; i < itemCount; i++) {
+            View view = parent.getChildAt(i);
+            int index = parent.getChildAdapterPosition(view);
+            float left = parent.getPaddingLeft();
+            float right = parent.getWidth() - parent.getPaddingRight();
+            if (index == 0) {
+                mPaint.setColor(mFirstItemToTopColor);
+                c.drawRect(left, view.getTop() - mFirstItemToTop, right, view.getTop(), mPaint);
+            } else {
+                mPaint.setColor(mDividerColor);
+                float top = view.getTop() - mDividerHeight;
+                float bottom = view.getTop();
+                c.drawRect(left, top, right, bottom, mPaint);
             }
         }
     }
